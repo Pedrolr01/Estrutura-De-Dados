@@ -16,7 +16,7 @@ struct cliente{
 	}
 	void mostrarCliente(){
 		
-		printf("Nome: %s\nSexo: %s", nome);
+		printf("Nome: %s\nSexo: %s", nome, sexo);
 	}
 };
 
