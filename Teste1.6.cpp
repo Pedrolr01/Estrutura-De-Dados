@@ -1,107 +1,216 @@
 #include<stdio.h>
-#include<string.h>
 
-struct cliente{
-	
-	char nome[100], sexo[3];
-	
-	void cliente1(){
-		
-		strcpy(nome,"");
-		strcpy(sexo,"");
-	}
-	void ler(){
-		
-		scanf("%s %s", nome, sexo);
-	}
-	void mostrarCliente(){
-		
-		printf("Nome: %s\nSexo: %s", nome, sexo);
-	}
+struct No {
+int valor;
+No *prox;
 };
 
-struct data{
-	
-	int dia, mes, ano, idade, idadeCliente[50];
-	cliente cc, salvarCliente[50];
-	
-	void data1(){
-		
-		dia = 0;
-		mes = 0;
-		ano = 0;
-		idade = 0;
-	}
-	void lerData(){
-		
-		scanf("%d/%d/%d", &dia, &mes, &ano);
-		calcularIdade();
-	}
-	void mostrarData(int i){
-		
-		printf("Idade: %d\n", idadeCliente[i]);
-	}
-	void calcularIdade(){
-		
-		idade = 2022 - ano;
-		if(mes == 1){
-			
-			idade = idade + 1;
-		}
-		else if(mes == 2){
-			
-			if(dia<=13){
-				
-				idade = idade + 1;
-			}
-		}
-	}
-	void novoCliente(int i){
-			
-		printf("Insira o nome e o sexo do cliente: \n");
-		salvarCliente[i].ler();
-		printf("\nInsira a data de nascimento do cliente: \n");
-		lerData();
-		idadeCliente[i]  = idade;
-	}
-	void mostrarClientes(int i){
-		
-		salvarCliente[i].mostrarCliente();
-		mostrarData(i);
-	}
+struct Lista {
+No *cabeca, *cauda;
+int n;
+
+Lista() {
+    cabeca = cauda = NULL;
+    n = 0;
+}
+
+bool vazia() { 
+    return (cabeca == NULL);
+}
+
+void inserirInicio() {
+    printf("\nDigite o valor: ");
+    int v;
+    scanf("%d", &v);
+    No *novo = new No();
+    novo->valor = v;
+    if (vazia()) {
+        novo->prox = NULL;
+        cabeca = novo;
+        cauda = novo;
+    } else {
+        novo->prox = cabeca;
+        cabeca = novo;
+    }
+    n++;
+}
+
+void inserirInicioAteN() {
+    printf("\nDigite o valor: ");
+    int v;
+    scanf("%d", &v);
+    No *novo = new No();
+    for(int i=1;i==n;i++){
+        novo->valor = i;
+        if (vazia()) {
+            novo->prox = NULL;
+            cabeca = novo;
+            cauda = novo;
+        } else {
+            novo->prox = cabeca;
+            cabeca = novo;
+        }
+        n++; 
+    }
+}
+
+void inserirFinal() {
+    printf("\nDigite o valor: ");
+    int v;
+    scanf("%d", &v);
+    No *novo = new No();
+    novo->valor = v;
+    if (vazia()) {
+        novo->prox = NULL;
+        cabeca = novo;
+        cauda = novo;
+    } else {
+        novo->prox = NULL;
+        cauda->prox = novo;
+        cauda = novo;
+    }
+    n++;
+}
+
+void imprimir() {
+    No *aux = cabeca;
+    printf("\nLista:\n");
+    while (aux != NULL) {
+        printf("%d ", aux->valor);
+        aux = aux->prox;
+    }
+    printf("\n\n");
+}
+
+int mostrarTamanho(int a) {
+    No *novo = new No();
+    novo->valor = a;
+    if (vazia()) {
+        novo->prox = NULL;
+        cabeca = novo;
+        cauda = novo;
+    } else {
+        novo->prox = NULL;
+        cauda->prox = novo;
+        cauda = novo;
+    }
+}
+
+int tamanho(){
+    return n;
+}
+
+void removerInicio() {
+    if (!vazia()) {
+        if (tamanho() == 1) {
+            No *aux = cabeca;
+            cabeca = NULL;
+            cauda = NULL;
+            delete(aux);
+        } else {
+            No *aux = cabeca;
+            cabeca = cabeca->prox;
+            delete(aux);
+        }
+        n--;
+    }
+}
+
+void removerTamanho(int a){
+    if (!vazia()) {
+        if (tamanho() == 1) {
+            No *aux = cabeca;
+            cabeca = NULL;
+            cauda = NULL;
+            delete(aux);
+        } else {
+            No *penultimo = cabeca;
+            while (penultimo->prox != cauda) {
+                penultimo = penultimo->prox;
+            }
+            delete(cauda);
+            cauda = penultimo;
+            cauda->prox = NULL;
+        }
+    }
+}
+
+void removerFinal() {
+    if (!vazia()) {
+        if (tamanho() == 1) {
+            No *aux = cabeca;
+            cabeca = NULL;
+            cauda = NULL;
+            delete(aux);
+        } else {
+            No *penultimo = cabeca;
+            while (penultimo->prox != cauda) {
+                penultimo = penultimo->prox;
+            }
+            delete(cauda);
+            cauda = penultimo;
+            cauda->prox = NULL;
+        }
+        
+        n--;
+    }
+}
 };
 
-int main(){
-	
-	int parar = 0, opcao, parar2 = 0, contador = 0;
-	data dat;
-	
-	while(parar == 0){
-		
-		printf("Selecione uma opcao:\n1. Inserir Cliente\n2. Lista de Clientes\n\n");
-		scanf("%d", &opcao);		
-		
-		switch(opcao){
-			
-			case 1:
-				
-				dat.novoCliente(contador);
-				contador++;
-				
-				break;
-			case 2:
-				
-				for(int i = 0; i < contador; i++){
-						
-					dat.mostrarClientes(i);
-						
-					if(i == 49){
-							
-						parar = 1;
-					}
-				}	
-					break;
-				}
-		}
-	}
+int main() {
+    int repetir = 0, opcao, valor;
+    Lista l;
 
+    while(repetir == 0){
+        printf("Escolha uma opcao: \n1. Inserir um valor no inicio da lista\n2. Inserir um valor no final da lista\n");
+        printf("3. Inserir os valores de 1 até N na lista\n4. Inserir um penultimo valor a lista\n");
+        printf("5. Remover valor do inicio da lista\n6. Remover valor do final da lista\n7. Remover N ultimos valores da lista\n");
+        printf("8. Remover apenas o segundo valor da lista\n9. Mostrar o tamanho da lista\n10. Finalizar programa\n");
+        scanf("%d", &opcao);
+    
+        switch(opcao){
+            case 1:
+                l.inserirInicio();
+                break;
+            
+            case 2:
+                l.inserirFinal();
+                break;
+            
+            case 3:
+                l.inserirInicioAteN();
+                break;
+            
+            case 4:
+                break;
+            
+            case 5:
+                l.removerInicio();
+                break;
+                
+            case 6:
+                l.removerFinal();
+                break;
+        
+            case 7:
+                break;
+            
+            case 8:
+                break;
+            
+            case 9:
+                l.mostrarTamanho(l.n);
+                break;
+            
+            case 10: 
+                repetir = 1;
+        }
+    
+        l.imprimir();
+        if(opcao == 9){
+            l.removerTamanho(opcao);
+        }
+    }
+    
+    return 0;
+}
