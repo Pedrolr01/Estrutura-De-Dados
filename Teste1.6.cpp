@@ -19,8 +19,8 @@ bool vazia() {
 }
 
 void inserirInicio() {
-    printf("\nDigite o valor: ");
     int v;
+    printf("\nDigite o valor: ");
     scanf("%d", &v);
     No *novo = new No();
     novo->valor = v;
@@ -36,27 +36,30 @@ void inserirInicio() {
 }
 
 void inserirInicioAteN() {
+    int parar;
     printf("\nDigite o valor: ");
-    int v;
-    scanf("%d", &v);
-    No *novo = new No();
-    for(int i=1;i==n;i++){
+    scanf("%d", &parar);
+    parar++;
+
+    for(int i=1;i<parar;i++){
+        No *novo = new No();
         novo->valor = i;
         if (vazia()) {
             novo->prox = NULL;
             cabeca = novo;
             cauda = novo;
         } else {
-            novo->prox = cabeca;
-            cabeca = novo;
+            novo->prox = NULL;
+            cauda->prox = novo;
+            cauda = novo;
         }
         n++; 
     }
 }
 
 void inserirFinal() {
-    printf("\nDigite o valor: ");
     int v;
+    printf("\nDigite o valor: ");
     scanf("%d", &v);
     No *novo = new No();
     novo->valor = v;
@@ -82,7 +85,7 @@ void imprimir() {
     printf("\n\n");
 }
 
-int mostrarTamanho(int a) {
+void mostrarTamanho(int a) {
     No *novo = new No();
     novo->valor = a;
     if (vazia()) {
@@ -151,7 +154,6 @@ void removerFinal() {
             cauda = penultimo;
             cauda->prox = NULL;
         }
-        
         n--;
     }
 }
@@ -165,7 +167,7 @@ int main() {
         printf("Escolha uma opcao: \n1. Inserir um valor no inicio da lista\n2. Inserir um valor no final da lista\n");
         printf("3. Inserir os valores de 1 até N na lista\n4. Inserir um penultimo valor a lista\n");
         printf("5. Remover valor do inicio da lista\n6. Remover valor do final da lista\n7. Remover N ultimos valores da lista\n");
-        printf("8. Remover apenas o segundo valor da lista\n9. Mostrar o tamanho da lista\n10. Finalizar programa\n");
+        printf("8. Remover apenas o segundo valor da lista\n9. Mostrar o tamanho da lista (valor aparece no final da lista)\n10. Finalizar programa\n");
         scanf("%d", &opcao);
     
         switch(opcao){
