@@ -57,17 +57,24 @@ void inserirInicioAteN() {
     }
 }
 
-void inserirFinal() {
+void inserirFinal(int a) {
     int v;
     printf("\nDigite o valor: ");
     scanf("%d", &v);
     No *novo = new No();
+    No *antigo = new No();
     novo->valor = v;
     if (vazia()) {
         novo->prox = NULL;
         cabeca = novo;
         cauda = novo;
-    } else {
+    } else if(a==1){
+        No *penultimo = cabeca;
+        while(penultimo->prox != cauda){
+            penultimo = penultimo->prox;
+        }
+        printf("%d", *penultimo);
+    } else{
         novo->prox = NULL;
         cauda->prox = novo;
         cauda = novo;
@@ -176,7 +183,7 @@ int main() {
                 break;
             
             case 2:
-                l.inserirFinal();
+                l.inserirFinal(0);
                 break;
             
             case 3:
@@ -184,6 +191,11 @@ int main() {
                 break;
             
             case 4:
+                if(l.tamanho()>1){
+                    l.inserirFinal(1);
+                }else{
+                    printf("Adicione mais itens a lista antes de executar está função\n");
+                }
                 break;
             
             case 5:
