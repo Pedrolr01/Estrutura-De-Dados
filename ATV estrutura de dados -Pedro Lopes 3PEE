@@ -1,0 +1,225 @@
+
+#include <stdio.h>
+
+struct No {
+    int valor;
+    No *prox;
+};
+
+struct Lista {
+    No *cabeca, *cauda;
+    int n;
+    
+    Lista(){
+        cabeca = cauda = NULL;
+        n = 0;
+    }
+    
+    bool vazia(){
+        return (cabeca==NULL);
+    }
+    
+    int tamanho(){
+        return n;
+    }
+    
+    void inserirInicio(int v){
+        No *novo = new No();
+        novo->valor = v;
+        
+        if(vazia()){
+            novo->prox = NULL;
+            cabeca = novo;
+            cauda = novo;
+            cauda->prox = NULL;
+        }
+        else{
+            novo->prox = cabeca;
+            cabeca = novo;
+            cauda->prox = NULL;
+        }
+        n++;
+    }
+    
+    void inserirFinal(int v){
+        No *novo = new No();
+        novo->valor = v;
+        
+        if(vazia()){
+            novo->prox = NULL;
+            cabeca = novo;
+            cauda = novo;
+        }
+        else{
+            cauda->prox = novo;
+            novo->prox = NULL;
+            cauda = novo;
+        }
+        n++;
+    }
+    
+    void removerInicio(){
+        
+        if(!vazia()){
+            if(tamanho() == 1){
+                No *aux = cabeca;
+                cabeca = NULL;
+                cauda = NULL;
+                delete(aux);
+            }
+            else{
+                No *aux = cabeca;
+                cabeca = cabeca->prox;
+                delete(aux);
+            }
+            
+            n--;
+        }
+        
+    }
+    
+    void removerFinal(){
+        if(!vazia()){
+            if(tamanho()==1){
+                No *aux = cabeca;
+                cabeca = NULL;
+                cauda = NULL;
+                delete(aux);
+            }
+            else{
+                No *aux = cabeca;
+                while(aux->prox != cauda){
+                    aux = aux->prox;
+                }
+                delete(cauda);
+                cauda = aux;
+                cauda->prox = NULL;
+            }
+            
+            n--;
+        }
+    }
+    
+    void verificarRecorrencia(int v){
+        No *aux = cabeca;
+        int verificador = 0;
+        while(aux != NULL){
+            if(aux->valor == v){
+               verificador = 1;
+            }
+            aux = aux->prox;
+        }
+        
+        if(verificador==1){
+            printf("True\n");
+        }
+        else{
+            printf("False\n");
+        }
+    }
+    
+    void excluirRecorrencias(int v){
+        No *aux = cabeca;
+        while(aux != NULL){
+            
+            if(aux->valor == v){
+                No *aux2 = cabeca;
+                int a = 0;
+            
+                while(a == 0){
+                    
+                    if(aux2->prox == aux){
+                        a = 1;
+                        aux2->prox = aux->prox;
+                        aux2 = aux;
+                        aux = aux->prox;
+                        delete(aux2);
+                        n--;
+                    }
+                    else{
+                        aux2 = aux2->prox;
+                    }
+                }
+            }else{
+                aux = aux->prox;
+            }
+        }
+    }
+    
+    void inserirFSemRecorrencia(int v){
+        No *aux = cabeca;
+        int a = 0;
+        while(aux != NULL){
+            if(aux->valor == v){
+                a = 1;
+            }
+            aux = aux->prox;
+        }
+        
+        if(a==0){
+            inserirFinal(v);
+        }
+    }
+    
+    
+    void mostrarLista(){
+        No *aux = cabeca;
+        while(aux != NULL){
+            printf("%d\n", aux->valor);
+            aux = aux->prox;
+        }
+    }
+};
+
+
+int main(){
+    Lista l;
+    int valor, opcao, parar=0;
+    
+    while(parar == 0){
+        printf("Por favor escolha qual operação deseja fazer:\n");
+        printf("\n1.Inserir valor no inicio\n2.Inserir valor no final\n3.Exlcuir valor no inicio\n4.Excluir valor no final");
+        printf("\n5.Verificar se o valor consta na lista\n6.Excluir ocorrencia de valor\n7.Inserir valor no final caso não tenha a ocorrencia deste valor");
+        printf("\n8.Mostrar lsita\n0. Finalizar programa");
+        scanf("%d", &opcao);
+    
+        switch(opcao){
+            case 1:
+                printf("\nPor favor digite o valor:");
+                scanf("%d",&valor);
+                l.inserirInicio(valor);
+                break;
+            case 2:
+                printf("\nPor favor digite o valor:");
+                scanf("%d",&valor);
+                l.inserirFinal(valor);
+                break;
+            case 3:
+                l.removerInicio();
+                break;
+            case 4:
+                l.removerFinal();
+                break;
+            case 5:
+                printf("\nPor favor digite o valor:");
+                scanf("%d",&valor);
+                l.verificarRecorrencia(valor);
+                break;
+            case 6:
+                printf("\nPor favor digite o valor:");
+                scanf("%d",&valor);
+                l.excluirRecorrencias(valor);
+                break;
+            case 7:
+                printf("\nPor favor digite o valor:");
+                scanf("%d",&valor);
+                l.inserirFSemRecorrencia(valor);
+                break;
+            case 9:
+                l.mostrarLista();
+                break;
+            case 0:
+                parar = 1;
+        }
+    }
+}  
